@@ -250,13 +250,13 @@ const IndexPage: React.FC = () => {
               </li>
               <li>
                 Iterative Refinement: The core of the diffusion process lies in a series of
-                denoising steps. At each step, the model predicts the "cleaner" version of
+                denoising steps. At each step, the model predicts the &quot;cleaner&quot; version of
                 the current noisy image, effectively removing noise and introducing image
                 details based on the embedded text information.
               </li>
               <li>
                 Predicting the Next Step: The model utilizes a U-Net like architecture to
-                predict the "denoised" version of the current image. This prediction step
+                predict the &quot;denoised&quot; version of the current image. This prediction step
                 leverages the embedded text information to ensure the denoised image aligns
                 with your description.
               </li>
