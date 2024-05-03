@@ -1,18 +1,11 @@
 'use client'
-import React, { useState, ChangeEvent, FormEvent, useEffect } from 'react';
+import React, {useState, ChangeEvent, FormEvent, useEffect} from 'react';
 import axios from 'axios';
 import './globals.css';
 
-interface FormData {
-  textbox1: string;
-  textbox2: string;
-  textbox3: string;
-}
+import CentralVisuals from "@/app/CentralVisuals/CentralVisuals";
+import {FormData, ImageData} from "@/app/Interfaces";
 
-interface ImageData {
-  name: string;
-  url: string;
-}
 
 const IndexPage: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
@@ -24,9 +17,10 @@ const IndexPage: React.FC = () => {
   const [images, setImages] = useState<ImageData[]>([]);
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(true);
   const EC2_BASE_URL = "http://172.31.79.161:5000"; // Ensure the protocol is included
+  const [diffusionSteps, setDiffusionSteps] = useState<number>(0)
 
   useEffect(() => {
-    fetchImages();
+    fetchImages().then();
   }, []);
 
   const fetchImages = async () => {
@@ -69,20 +63,16 @@ const IndexPage: React.FC = () => {
     }
   };
 
-
-  const [epochCounter, setEpochCounter] = useState<string>('000,000'); // Initialize epoch counter
-
   // Function to update epoch counter
-  const updateEpochCounter = () => {
-    // Call your function here to update epoch counter based on your logic
-    // For now, let's just set it to a static value
-    const updatedEpochCounter = '000,000'; // Example static value
-    setEpochCounter(updatedEpochCounter);
-  };
+  // const updateEpochCounter = () => {
+  //   // Call your function here to update epoch counter based on your logic
+  //   // For now, let's just set it to a static value
+  //   const updatedEpochCounter = 0; // Example static value
+  //   setDiffusionSteps(updatedEpochCounter);
+  // };
 
   return (
-      <div>
-
+      <>
         {/* First header, 2xheight of second heder, contains text */}
         <nav className="navbar">
           <div>
@@ -104,16 +94,19 @@ const IndexPage: React.FC = () => {
                 onClick={() => { /* Implement play/pause functionality here */ }}>
               <i id="play-pause-icon" className="material-icons"></i>
             </button>
-            <button className="control-button fastforward" title="fastforward">
+            <button
+                className="control-button fastforward"
+                title="fastforward"
+            >
               <i className="material-icons"></i>
             </button>
           </div>
           <div>
             <div>
-              <span className="header_sub_column">Epoch</span>
+              <span className="header_sub_column">Diffusion Steps</span>
             </div>
             <div>
-              <span className="epoch-number">{epochCounter}</span>
+              <span className="epoch-number">{diffusionSteps.toFixed()}</span>
             </div>
           </div>
           <div>
@@ -173,12 +166,14 @@ const IndexPage: React.FC = () => {
           </div>
 
 
-          <div className="column">
+          <div className="column" id={"imageDisplayContainer"}>
+
             <h2>ML Model</h2>
-            <p>Content for the model visuals.</p>
+            <CentralVisuals
+              diffusionStep={10}
+            />
+
           </div>
-
-
           <div className="column">
             <div className="images">
               <h2 className="text-lg font-semibold">Images</h2>
@@ -321,7 +316,7 @@ const IndexPage: React.FC = () => {
             </ul>
           </div>
         </div>
-      </div>
+      </>
   );
 };
 

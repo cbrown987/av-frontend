@@ -13,16 +13,7 @@
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-          to bottom,
-          transparent,
-          rgb(var(--background-end-rgb))
-  ) rgb(var(--background-start-rgb));
-  margin: 0;
-  padding: 0;
-}
+
 
 .bold-word {
   font-size: 2.2rem; /* Adjust font size */
@@ -241,7 +232,7 @@ li {
 
 
 .control-button.rewind {
-  background-image: url('button_imgs/rewind.png');
+  background-image: url('../public/button_imgs/rewind.png');
   width: 40px;
   height: 40px;
   background-size: cover;
@@ -253,7 +244,7 @@ li {
 }
 
 .control-button.play-pause {
-  background-image: url('button_imgs/play.png');
+  background-image: url('../public/button_imgs/play.png');
   width: 70px;
   height: 70px;
   background-size: cover;
@@ -265,7 +256,7 @@ li {
 }
 
 .control-button.fastforward {
-  background-image: url('button_imgs/fastforward.png');
+  background-image: url('../public/button_imgs/fastforward.png');
   width: 70px;
   height: 70px;
   background-size: cover;
@@ -278,7 +269,7 @@ li {
 
 
 .control-button.rewind:hover {
-  background-image: url('button_imgs/rewind_hover.png');
+  background-image: url('../public/button_imgs/rewind_hover.png');
   width: 40px;
   height: 40px;
   background-size: cover;
@@ -290,7 +281,7 @@ li {
 }
 
 .control-button.play-pause:hover {
-  background-image: url('button_imgs/pause.png');
+  background-image: url('../public/button_imgs/pause.png');
   width: 70px;
   height: 70px;
   background-size: cover;
@@ -302,7 +293,7 @@ li {
 }
 
 .control-button.fastforward:hover {
-  background-image: url('button_imgs/fastforward_hover.png');
+  background-image: url('../public/button_imgs/fastforward_hover.png');
   width: 40px;
   height: 40px;
   background-size: cover;
