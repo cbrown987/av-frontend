@@ -10,9 +10,14 @@ const CentralVisuals: React.FC<CentralVisualProps> = ({ diffusionStep }) => {
     const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        if (typeof window === "undefined") return;
+        if (
+            typeof window === 'undefined' ||
+            typeof document === 'undefined'
+        ) return;
         const image = imageRef.current;
-        if (!image.src) image.src = 'elkhound.jpg';
+        if (!image.src){
+            image.src = 'elkhound.jpg';
+        }
         image.onload = () => createDiffusionImages(image);
         return () => { image.onload = null; };
     }, [diffusionStep]);
