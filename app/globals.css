@@ -30,7 +30,7 @@
   color: rgba(255, 255, 255, 0.7);
   font-family: "Roboto Thin", Arial, sans-serif;
   font-size: 2.2rem;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  /*box-shadow: 0 2px 4px rgba(0,0,0,0.2);*/
 }
 
 
@@ -42,7 +42,7 @@
   justify-content: space-between;
   align-items: center;
   font-family: Arial;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  /*box-shadow: 0 2px 4px rgba(0,0,0,0.2);*/
 }
 
 
@@ -121,7 +121,7 @@
 .columns {
   display: flex; /* Make the container a flexbox */
   background-color: #eeeeee;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  /*box-shadow: 0 2px 4px rgba(0,0,0,0.2);*/
 }
 
 .column {
@@ -144,7 +144,7 @@
 
 .header_sub_columns {
   display: flex;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  /*box-shadow: 0 2px 4px rgba(0,0,0,0.2);*/
 }
 
 .header_sub_column {
@@ -176,7 +176,7 @@ h1, h2, h3, h4, h5, h6 {
 /* Style paragraphs */
 p {
   font-family: Arial, sans-serif;
-  color: #666;
+  /*color: #666;*/
   line-height: 1.6;
 }
 
@@ -189,7 +189,7 @@ ul {
 /* Style list items */
 li {
   font-family: Arial, sans-serif;
-  color: #666;
+  /*color: #666;*/
   line-height: 1.6;
 }
 
@@ -216,7 +216,7 @@ li {
 }
 
 .control-button {
-  background-color: #3f51b5; /* Adjust background color */
+  /*background-color: #3f51b5; !* Adjust background color *!*/
   color: white; /* Adjust text color */
   border: none;
   border-radius: 5px; /* Add rounded corners */
@@ -227,7 +227,7 @@ li {
 }
 
 .control-button:hover {
-  background-color: #283776; /* Adjust hover background color */
+  /*background-color: #283776; !* Adjust hover background color *!*/
 }
 
 

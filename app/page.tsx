@@ -2,7 +2,6 @@
 import React, {useState, ChangeEvent, FormEvent, useEffect} from 'react';
 import axios from 'axios';
 import './globals.css';
-
 import CentralVisuals from "@/app/CentralVisuals/CentralVisuals";
 import {FormData, ImageData} from "@/app/Interfaces";
 
@@ -16,8 +15,10 @@ const IndexPage: React.FC = () => {
 
   const [images, setImages] = useState<ImageData[]>([]);
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(true);
-  const EC2_BASE_URL = "http://172.31.79.161:5000"; // Ensure the protocol is included
+  const EC2_BASE_URL = "http://18.208.126.51:5000"; // Ensure the protocol is included
+  const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null);
   const [diffusionSteps, setDiffusionSteps] = useState<number>(0)
+
 
   useEffect(() => {
     fetchImages().then();
@@ -26,6 +27,7 @@ const IndexPage: React.FC = () => {
   const fetchImages = async () => {
     try {
       const response = await axios.get<ImageData[]>(`${EC2_BASE_URL}/api/images`);
+      console.log(response.data)
       setImages(response.data);
     } catch (error) {
       console.error('Error fetching images:', error);
@@ -53,7 +55,7 @@ const IndexPage: React.FC = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        timeout: 360000,
+        timeout: 3600000,
       });
       alert('Data submitted successfully!');
       fetchImages();  // Fetch images again after submitting new data
@@ -63,13 +65,26 @@ const IndexPage: React.FC = () => {
     }
   };
 
-  // Function to update epoch counter
-  // const updateEpochCounter = () => {
-  //   // Call your function here to update epoch counter based on your logic
-  //   // For now, let's just set it to a static value
-  //   const updatedEpochCounter = 0; // Example static value
-  //   setDiffusionSteps(updatedEpochCounter);
-  // };
+  const handlePlayButtonClick = () => {
+    if (intervalId === null) {
+      const id = setInterval(() => {
+        setDiffusionSteps((diffusionSteps) => diffusionSteps +1);
+      }, 100); // Change the count every 2000 milliseconds (2 seconds)
+      setIntervalId(id);
+    } else {
+      clearInterval(intervalId);
+      setIntervalId(null)
+    }
+  }
+
+  useEffect(() => {
+    return () => {
+      if (intervalId !== null) {
+        clearInterval(intervalId);
+      }
+    };
+  }, [intervalId]);
+
 
   return (
       <>
@@ -91,7 +106,7 @@ const IndexPage: React.FC = () => {
                 className="control-button play-pause"
                 id="play-pause-button"
                 title="Run/Pause training"
-                onClick={() => { /* Implement play/pause functionality here */ }}>
+                onClick={() => { handlePlayButtonClick() }}>
               <i id="play-pause-icon" className="material-icons"></i>
             </button>
             <button
@@ -110,7 +125,7 @@ const IndexPage: React.FC = () => {
             </div>
           </div>
           <div>
-            <span className="header_sub_column">Something</span>
+            <span className="header_sub_column">Batch Size</span>
           </div>
           <div>
             <span className="header_sub_column">Something</span>
@@ -129,9 +144,6 @@ const IndexPage: React.FC = () => {
 
         <div className="columns">
           <div className="column">
-
-            <button className="sidebar-button" onClick={() => setSidebarOpen(!sidebarOpen)}>Toggle Sidebar</button>
-            <div className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
               <div>
                 <h2 className="text-lg font-semibold">Sidebar</h2>
                 <form onSubmit={handleSubmit} className="sidebar-form">
@@ -163,7 +175,6 @@ const IndexPage: React.FC = () => {
                 </form>
               </div>
             </div>
-          </div>
 
 
           <div className="column" id={"imageDisplayContainer"}>
