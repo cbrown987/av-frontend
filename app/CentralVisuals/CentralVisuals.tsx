@@ -6,33 +6,31 @@ const CentralVisuals: React.FC<CentralVisualProps> = ({ diffusionStep }) => {
     const [canvases, setCanvases] = useState<HTMLCanvasElement[]>([]);
     const [maxImages, setMaxImages] = useState<number>(10);
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
-    const imageRef: React.MutableRefObject<HTMLImageElement> = useRef(new Image());
+    const [imageSrc, setImageSrc] = useState<string>('elkhound.jpg');
     const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        if (
-            typeof window === 'undefined' ||
-            typeof document === 'undefined'
-        ) return;
-        const image = imageRef.current;
-        if (!image.src){
-            image.src = 'elkhound.jpg';
+        if (typeof window === 'undefined' || typeof document === 'undefined') {
+            return;
         }
-        image.onload = () => createDiffusionImages(image);
-        return () => { image.onload = null; };
     }, [diffusionStep]);
+
+    const handleImageLoad = (event: React.SyntheticEvent<HTMLImageElement, Event>) => {
+        const image = event.currentTarget;
+        createDiffusionImages(image);
+    };
 
     const createDiffusionImages = useCallback((image: HTMLImageElement) => {
         const frames = 49;
-        let tempCanvases: HTMLCanvasElement[] = canvases.length ? canvases : Array.from({ length: frames + 1 }, () => document.createElement('canvas'));
+        let tempCanvases = canvases.length ? canvases : Array.from({ length: frames + 1 }, () => document.createElement('canvas'));
 
         tempCanvases.forEach((canvas, index) => {
             canvas.width = 300;
             canvas.height = 300;
-            const ctx: CanvasRenderingContext2D = canvas.getContext('2d')!;
+            const ctx = canvas.getContext('2d')!;
             ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
-            const imageData: ImageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-            const originalData: ImageData = new ImageData(new Uint8ClampedArray(imageData.data), canvas.width, canvas.height);
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const originalData = new ImageData(new Uint8ClampedArray(imageData.data), canvas.width, canvas.height);
 
             const frameRatio = index / frames;
             for (let i = 0; i < imageData.data.length; i += 4) {
@@ -66,6 +64,7 @@ const CentralVisuals: React.FC<CentralVisualProps> = ({ diffusionStep }) => {
                 overflowY: 'hidden',
                 whiteSpace: 'nowrap'
             }}>
+                <img src={imageSrc} alt="Loadable Image" onLoad={handleImageLoad} style={{ display: 'none' }} />
                 {canvases.slice(0, maxImages).map((canvas, index) => (
                     <img key={index} src={canvas.toDataURL()} alt={`Noise frame ${index}`}
                          className={styles.canvasImage}
