@@ -1,8 +1,10 @@
 'use client'
 import React, {useState, ChangeEvent, FormEvent, useEffect} from 'react';
+import dynamic from 'next/dynamic';
 import axios from 'axios';
+
 import './globals.css';
-import CentralVisuals from "@/app/CentralVisuals/CentralVisuals";
+import CentralVisuals from "@/app/components/CentralVisuals/CentralVisuals";
 import {FormData, ImageData} from "@/app/Interfaces";
 
 
@@ -84,6 +86,13 @@ const IndexPage: React.FC = () => {
       }
     };
   }, [intervalId]);
+
+  const DynamicCentralVisuals = dynamic(
+      () => {
+        return import('.//components/CentralVisuals/CentralVisuals');
+      },
+      { ssr: false }
+  );
 
 
   return (
@@ -180,7 +189,7 @@ const IndexPage: React.FC = () => {
           <div className="column" id={"imageDisplayContainer"}>
 
             <h2>ML Model</h2>
-            <CentralVisuals
+            <DynamicCentralVisuals
               diffusionStep={10}
             />
 
