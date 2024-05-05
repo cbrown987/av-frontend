@@ -11,6 +11,12 @@ const CentralVisuals: React.FC<CentralVisualProps> = ({ diffusionStep }) => {
     const [imageSrc, setImageSrc] = useState<string>('elkhound.jpg');
     const containerRef = useRef<HTMLDivElement>(null);
 
+    useEffect(() => {
+        if (typeof window === 'undefined' || typeof document === 'undefined') {
+            return;
+        }
+    }, []);
+
     const canvases = useMemo(() => {
         let tempCanvases = Array.from({ length: maxImages }, () => document.createElement('canvas'));
         tempCanvases.forEach((canvas, index) => {
