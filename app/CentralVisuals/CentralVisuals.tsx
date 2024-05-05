@@ -1,20 +1,24 @@
 'use client'
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 
-// Assuming this interface is defined in your project.
-import { CentralVisualProps } from "@/app/Interfaces";
+import {CentralVisualProps} from "@/app/Interfaces";
 import styles from './style.module.css';
 
-interface CentralVisualsProps extends CentralVisualProps {
-    canvases: HTMLCanvasElement[];
-}
-
-const CentralVisuals: React.FC<CentralVisualsProps> = ({ diffusionStep, canvases }) => {
+const CentralVisuals: React.FC<CentralVisualProps> = ({ diffusionStep }) => {
     const [maxImages, setMaxImages] = useState<number>(10);
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
     const [hoverTimeout, setHoverTimeout] = useState<NodeJS.Timeout | null>(null);
     const [imageSrc, setImageSrc] = useState<string>('elkhound.jpg');
-    const containerRef = useRef<HTMLDivElement | null>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
+
+    const canvases = useMemo(() => {
+        let tempCanvases = Array.from({ length: maxImages }, () => document.createElement('canvas'));
+        tempCanvases.forEach((canvas, index) => {
+            canvas.width = 300;
+            canvas.height = 300;
+        });
+        return tempCanvases;
+    }, [maxImages]);
 
     useEffect(() => {
         const image = new Image();
@@ -26,7 +30,7 @@ const CentralVisuals: React.FC<CentralVisualsProps> = ({ diffusionStep, canvases
     }, [imageSrc, maxImages]);
 
     const createDiffusionImages = useCallback((image: HTMLImageElement) => {
-        canvases.forEach((canvas, index) => {
+        [...canvases].reverse().forEach((canvas, index) => {
             const ctx = canvas.getContext('2d')!;
             ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
             const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
@@ -43,7 +47,7 @@ const CentralVisuals: React.FC<CentralVisualsProps> = ({ diffusionStep, canvases
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [canvases]);
 
-    const interpolate = useCallback((startValue: number, endValue: number, factor: number): number => {
+    const interpolate = useCallback((startValue: number, endValue: number, factor: number) => {
         return startValue + (endValue - startValue) * factor;
     }, []);
 
