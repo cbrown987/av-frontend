@@ -4,12 +4,14 @@ import dynamic from 'next/dynamic';
 import axios from 'axios';
 
 import './globals.css';
-import CentralVisuals from "@/app/components/CentralVisuals/CentralVisuals";
 import {FormData, ImageData} from "@/app/Interfaces";
 import TextContent from "@/app/components/TextContent/TextContent";
 
 
 const IndexPage: React.FC = () => {
+  const NUMBER_OF_IMAGES: number = 39
+
+
   const [formData, setFormData] = useState<FormData>({
     textbox1: '',
     textbox2: '',
@@ -17,7 +19,6 @@ const IndexPage: React.FC = () => {
   });
 
   const [images, setImages] = useState<ImageData[]>([]);
-  const [sidebarOpen, setSidebarOpen] = useState<boolean>(true);
   const EC2_BASE_URL = "http://18.208.126.51:5000"; // Ensure the protocol is included
   const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null);
   const [diffusionSteps, setDiffusionSteps] = useState<number>(0)
@@ -191,7 +192,7 @@ const IndexPage: React.FC = () => {
 
             <h2>ML Model</h2>
             <DynamicCentralVisuals
-              diffusionStep={10}
+              diffusionStep={diffusionSteps}
             />
 
           </div>
@@ -202,6 +203,7 @@ const IndexPage: React.FC = () => {
               <div className="image-grid">
                 {images.map((image, index) => (
                     <div key={index} className="image-container">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img src={`http://localhost:5000${image.url}`} alt={image.name} />
                       <p className="image-info">{image.name}</p>
                     </div>
