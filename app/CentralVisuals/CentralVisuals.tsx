@@ -1,24 +1,20 @@
-import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
+'use client'
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 
+// Assuming this interface is defined in your project.
 import { CentralVisualProps } from "@/app/Interfaces";
 import styles from './style.module.css';
 
-const CentralVisuals: React.FC<CentralVisualProps> = ({ diffusionStep }) => {
+interface CentralVisualsProps extends CentralVisualProps {
+    canvases: HTMLCanvasElement[];
+}
+
+const CentralVisuals: React.FC<CentralVisualsProps> = ({ diffusionStep, canvases }) => {
     const [maxImages, setMaxImages] = useState<number>(10);
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
     const [hoverTimeout, setHoverTimeout] = useState<NodeJS.Timeout | null>(null);
     const [imageSrc, setImageSrc] = useState<string>('elkhound.jpg');
-    const containerRef = useRef<HTMLDivElement>(null);
-
-    const canvases = useMemo(() => {
-        const frames = maxImages;
-        let tempCanvases = Array.from({ length: frames }, () => document.createElement('canvas'));
-        tempCanvases.forEach((canvas, index) => {
-            canvas.width = 300;
-            canvas.height = 300;
-        });
-        return tempCanvases.reverse();
-    }, [maxImages]);
+    const containerRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
         const image = new Image();
@@ -26,10 +22,11 @@ const CentralVisuals: React.FC<CentralVisualProps> = ({ diffusionStep }) => {
         image.onload = () => {
             createDiffusionImages(image);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [imageSrc, maxImages]);
 
     const createDiffusionImages = useCallback((image: HTMLImageElement) => {
-        canvases.slice().reverse().forEach((canvas, index) => {
+        canvases.forEach((canvas, index) => {
             const ctx = canvas.getContext('2d')!;
             ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
             const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
@@ -43,9 +40,10 @@ const CentralVisuals: React.FC<CentralVisualProps> = ({ diffusionStep }) => {
             }
             ctx.putImageData(imageData, 0, 0);
         });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [canvases]);
 
-    const interpolate = useCallback((startValue: number, endValue: number, factor: number) => {
+    const interpolate = useCallback((startValue: number, endValue: number, factor: number): number => {
         return startValue + (endValue - startValue) * factor;
     }, []);
 
@@ -76,6 +74,7 @@ const CentralVisuals: React.FC<CentralVisualProps> = ({ diffusionStep }) => {
             />
             <div ref={containerRef} className={styles.canvasContainer}>
                 {canvases.map((canvas, index) => (
+                    // eslint-disable-next-line @next/next/no-img-element
                     <img key={index} src={canvas.toDataURL()} alt={`Noise frame ${index}`}
                          className={styles.canvasImage}
                          style={{
