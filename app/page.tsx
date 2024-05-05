@@ -10,16 +10,16 @@ import TextContent from "@/app/components/TextContent/TextContent";
 
 const IndexPage: React.FC = () => {
   const NUMBER_OF_IMAGES: number = 39
+  const EC2_BASE_URL = "http://18.208.126.51:5000"; // Ensure the protocol is included
 
 
   const [formData, setFormData] = useState<FormData>({
-    textbox1: '',
-    textbox2: '',
-    textbox3: '',
+    textInput: '',
+    batchSize: '1',
+    guidanceScale: '3.0',
   });
 
   const [images, setImages] = useState<ImageData[]>([]);
-  const EC2_BASE_URL = "http://18.208.126.51:5000"; // Ensure the protocol is included
   const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null);
   const [diffusionSteps, setDiffusionSteps] = useState<number>(0)
 
@@ -50,9 +50,9 @@ const IndexPage: React.FC = () => {
     e.preventDefault();
     try {
       const dataToSend = {
-        prompt: formData.textbox1,  // Assuming the 'prompt' is stored in textbox1
-        batch_size: parseInt(formData.textbox2),  // Assuming the 'batch_size' is stored in textbox2
-        guidance_scale: parseFloat(formData.textbox3)  // Assuming the 'guidance_scale' is stored in textbox3
+        prompt: formData.textInput,
+        batch_size: parseInt(formData.batchSize),
+        guidance_scale: parseFloat(formData.guidanceScale)
       };
 
       await axios.post(`${EC2_BASE_URL}/api/submit`, dataToSend, {
@@ -73,12 +73,18 @@ const IndexPage: React.FC = () => {
     if (intervalId === null) {
       const id = setInterval(() => {
         setDiffusionSteps((diffusionSteps) => diffusionSteps +1);
-      }, 100); // Change the count every 2000 milliseconds (2 seconds)
+      }, 100);
       setIntervalId(id);
     } else {
       clearInterval(intervalId);
       setIntervalId(null)
     }
+  }
+  const handleResetButtonClick = () => {
+    setDiffusionSteps(0);
+  }
+  const handleFastForwardButtonClick = () => {
+    setDiffusionSteps(39)
   }
 
   useEffect(() => {
@@ -110,19 +116,24 @@ const IndexPage: React.FC = () => {
         {/* Second header, contains model parameter dropdowns */}
         <nav className="navbar_sub">
           <div className="timeline_controls">
-            <button className="control-button rewind" title="rewind">
+            <button
+                className="control-button rewind"
+                  title="rewind"
+                onClick={handleResetButtonClick}
+            >
               <i className="material-icons"></i>
             </button>
             <button
                 className="control-button play-pause"
                 id="play-pause-button"
                 title="Run/Pause training"
-                onClick={() => { handlePlayButtonClick() }}>
+                onClick={handlePlayButtonClick}>
               <i id="play-pause-icon" className="material-icons"></i>
             </button>
             <button
                 className="control-button fastforward"
                 title="fastforward"
+                onClick={handleFastForwardButtonClick}
             >
               <i className="material-icons"></i>
             </button>
@@ -132,24 +143,29 @@ const IndexPage: React.FC = () => {
               <span className="header_sub_column">Diffusion Steps</span>
             </div>
             <div>
-              <span className="epoch-number">{diffusionSteps.toFixed()}</span>
+              <span className="diffusion-step">{diffusionSteps.toFixed()}</span>
             </div>
           </div>
           <div>
             <span className="header_sub_column">Batch Size</span>
+            <input
+                type="text"
+                value={formData.batchSize}
+                name={"batchSize"}
+                onChange={handleChange}
+                placeholder="Enter whole numbers only"
+            />
           </div>
           <div>
-            <span className="header_sub_column">Something</span>
+            <span className="header_sub_column">Guidance Scale</span>
+            <input
+                type="text"
+                value={formData.guidanceScale}
+                name={"guidanceScale"}
+                onChange={handleChange}
+            />
           </div>
-          <div>
-            <span className="header_sub_column">Something</span>
-          </div>
-          <div>
-            <span className="header_sub_column">Something</span>
-          </div>
-          <div>
-            <span className="header_sub_column">Something</span>
-          </div>
+
 
         </nav>
 
@@ -160,26 +176,10 @@ const IndexPage: React.FC = () => {
                 <form onSubmit={handleSubmit} className="sidebar-form">
                   <input
                       type="text"
-                      name="textbox1"
-                      value={formData.textbox1}
+                      name="textInput"
+                      value={formData.textInput}
                       onChange={handleChange}
-                      placeholder="Textbox 1"
-                      className="sidebar-input"
-                  />
-                  <input
-                      type="text"
-                      name="textbox2"
-                      value={formData.textbox2}
-                      onChange={handleChange}
-                      placeholder="Textbox 2"
-                      className="sidebar-input"
-                  />
-                  <input
-                      type="text"
-                      name="textbox3"
-                      value={formData.textbox3}
-                      onChange={handleChange}
-                      placeholder="Textbox 3"
+                      placeholder="Enter prompt here"
                       className="sidebar-input"
                   />
                   <button type="submit" className="sidebar-button-submit">Submit</button>

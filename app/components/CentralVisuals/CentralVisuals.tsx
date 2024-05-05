@@ -3,7 +3,7 @@ import { CentralVisualProps } from "@/app/Interfaces";
 import styles from './style.module.css';
 
 const CentralVisuals: React.FC<CentralVisualProps> = ({ diffusionStep }) => {
-    const NUMBER_OF_IMAGES = 39;
+    const NUMBER_OF_IMAGES = 29;
     const [isLoading, setIsLoading] = useState(true);
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
     const [hoverTimeout, setHoverTimeout] = useState<NodeJS.Timeout | null>(null);

@@ -1,7 +1,7 @@
 export interface FormData {
-    textbox1: string;
-    textbox2: string;
-    textbox3: string;
+    textInput: string;
+    batchSize: string
+    guidanceScale: string;
 }
 
 export interface ImageData {

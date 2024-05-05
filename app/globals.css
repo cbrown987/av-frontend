@@ -152,7 +152,7 @@
   padding: 1rem;
   font-family: Arial;
 }
-.epoch-number {
+.diffusion-step {
   flex: 1;
   padding: 1rem;
   font-size: x-large;

@@ -1,1 +1,36 @@
 @import "material-symbols";
+
+.columns {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 20px;
+}
+
+.column {
+    flex: 1;  /* Equal width to all columns */
+}
+
+#imageDisplayContainer {
+    flex: 3;  /* Larger flex value to increase size */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.imageDisplayContainer .centralVisual {
+    width: 100%;  /* Take full width of the container */
+    height: auto;  /* Maintain aspect ratio */
+    max-height: 600px;  /* Optional: set a max height */
+}
+
+.sidebar-form, .images {
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.image-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Adjust based on your needs */
+    gap: 10px;
+}
