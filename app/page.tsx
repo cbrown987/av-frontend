@@ -6,11 +6,12 @@ import axios from 'axios';
 import './globals.css';
 import {FormData, ImageData} from "@/app/Interfaces";
 import TextContent from "@/app/components/TextContent/TextContent";
+import FetchedImage from "@/app/components/FetchedImage/FetchedImage";
 
 
 const IndexPage: React.FC = () => {
   const NUMBER_OF_IMAGES: number = 39
-  const EC2_BASE_URL = "http://18.208.126.51:5000"; // Ensure the protocol is included
+  const EC2_BASE_URL = "http://3.236.122.207:5000"; // Ensure the protocol is included
 
 
   const [formData, setFormData] = useState<FormData>({
@@ -19,18 +20,21 @@ const IndexPage: React.FC = () => {
     guidanceScale: '3.0',
   });
 
-  const [images, setImages] = useState<ImageData[]>([]);
+  const [images, setImages] = useState<ImageData>({
+    name: "", url: ""
+  });
+  const [image, setImage] = useState(null);
   const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null);
   const [diffusionSteps, setDiffusionSteps] = useState<number>(0)
 
 
-  useEffect(() => {
-    fetchImages().then();
-  }, []);
+  // useEffect(() => {
+  //   fetchImages().then();
+  // }, []);
 
   const fetchImages = async () => {
     try {
-      const response = await axios.get<ImageData[]>(`${EC2_BASE_URL}/api/images`);
+      const response = await axios.get<ImageData>(`${EC2_BASE_URL}/api/images`);
       console.log(response.data)
       setImages(response.data);
     } catch (error) {
@@ -201,13 +205,7 @@ const IndexPage: React.FC = () => {
               <h2 className="text-lg font-semibold">Images</h2>
               <p>Output images</p>
               <div className="image-grid">
-                {images.map((image, index) => (
-                    <div key={index} className="image-container">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={`http://localhost:5000${image.url}`} alt={image.name} />
-                      <p className="image-info">{image.name}</p>
-                    </div>
-                ))}
+                    <FetchedImage />
               </div>
             </div>
           </div>
