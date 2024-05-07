@@ -21,8 +21,9 @@ const IndexPage: React.FC = () => {
         textInput: '',
         batchSize: '1',
         guidanceScale: '3.0',
+        headChannels: '64',   
+        xfHeads: '8'          
     });
-
 
     const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null);
     const [diffusionSteps, setDiffusionSteps] = useState<number>(0)
@@ -54,9 +55,10 @@ const IndexPage: React.FC = () => {
             const dataToSend = {
                 prompt: formData.textInput,
                 batch_size: parseInt(formData.batchSize),
-                guidance_scale: parseFloat(formData.guidanceScale)
+                guidance_scale: parseFloat(formData.guidanceScale),
+                head_channels: parseInt(formData.headChannels),
+                xf_heads: parseInt(formData.xfHeads)            
             };
-
             await axios.post(`${EC2_BASE_URL}/api/submit`, dataToSend, {
                 headers: {
                     'Content-Type': 'application/json',
@@ -157,7 +159,7 @@ const IndexPage: React.FC = () => {
                             <input
                                 type="text"
                                 value={formData.batchSize}
-                                name={"batchSize"}
+                                name={""}
                                 onChange={handleChange}
                                 placeholder="Enter whole numbers only"
                                 className={styles.inputField}
@@ -170,6 +172,28 @@ const IndexPage: React.FC = () => {
                                 value={formData.guidanceScale}
                                 name={"guidanceScale"}
                                 onChange={handleChange}
+                                className={styles.inputField}
+                            />
+                        </div>
+                        <div className={`${styles.inputGroup}`}>
+                            <span className="header_sub_column">Head Channels:</span>
+                            <input
+                                type="text"
+                                name="headChannels"
+                                value={formData.headChannels}
+                                onChange={handleChange}
+                                placeholder="Enter whole numbers only"
+                                className={styles.inputField}
+                            />
+                        </div>
+                        <div className={`${styles.inputGroup}`}>
+                            <span className="header_sub_column">XF Heads:</span>
+                            <input
+                                type="text"
+                                name="xfHeads"
+                                value={formData.xfHeads}
+                                onChange={handleChange}
+                                placeholder="Enter whole numbers only"
                                 className={styles.inputField}
                             />
                         </div>
