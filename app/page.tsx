@@ -14,7 +14,7 @@ import FetchedImage from "@/app/components/FetchedImage/FetchedImage";
 
 const IndexPage: React.FC = () => {
   const NUMBER_OF_IMAGES: number = 39
-  const EC2_BASE_URL = "http://3.236.122.207:5000"; // Ensure the protocol is included
+  const EC2_BASE_URL = "http://34.231.244.123:5000"; // Ensure the protocol is included
 
 
   const [formData, setFormData] = useState<FormData>({
