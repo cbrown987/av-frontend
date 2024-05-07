@@ -2,12 +2,12 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { CentralVisualProps } from "@/app/Interfaces";
 import styles from './style.module.css';
 
-const CentralVisuals: React.FC<CentralVisualProps> = ({ diffusionStep }) => {
+const CentralVisuals: React.FC<CentralVisualProps> = ({ diffusionStep, imageSrc }) => {
     const NUMBER_OF_IMAGES = 29;
     const [isLoading, setIsLoading] = useState(true);
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
     const [hoverTimeout, setHoverTimeout] = useState<NodeJS.Timeout | null>(null);
-    const [imageSrc, setImageSrc] = useState<string>('elkhound.jpg');
+    // const [imageSrc, setImageSrc] = useState<string>('elkhound.jpg');
     const containerRef = useRef<HTMLDivElement>(null);
     const canvasesRef = useRef<Array<HTMLCanvasElement>>([]);
 
@@ -25,7 +25,9 @@ const CentralVisuals: React.FC<CentralVisualProps> = ({ diffusionStep }) => {
 
     const loadAndProcessImage = useCallback(() => {
         const image = new Image();
-        image.src = imageSrc;
+        if (typeof imageSrc === "string") {
+            image.src = imageSrc;
+        }
         image.onload = () => {
             createDiffusionImages(image);
             setIsLoading(false);
@@ -88,6 +90,7 @@ const CentralVisuals: React.FC<CentralVisualProps> = ({ diffusionStep }) => {
 
     return (
         <div ref={containerRef} className={styles.canvasContainer}>
+            {imageSrc == null && <div className={styles.loading}>Please submit some variables</div>}
             {isLoading && <div className={styles.loading}>Loading...</div>}
             {renderCanvases()}
         </div>

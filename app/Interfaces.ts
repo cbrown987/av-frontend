@@ -11,4 +11,5 @@ export interface ImageData {
 
 export interface CentralVisualProps{
     diffusionStep: number;
+    imageSrc?: string | null
 }
