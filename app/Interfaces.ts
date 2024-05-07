@@ -2,6 +2,8 @@ export interface FormData {
     textInput: string;
     batchSize: string
     guidanceScale: string;
+    headChannels: string;
+    xfHeads: string;
 }
 
 export interface ImageData {
@@ -11,5 +13,4 @@ export interface ImageData {
 
 export interface CentralVisualProps{
     diffusionStep: number;
-    imageSrc?: string | null
 }

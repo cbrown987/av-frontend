@@ -2,14 +2,17 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { CentralVisualProps } from "@/app/Interfaces";
 import styles from './style.module.css';
 
-const CentralVisuals: React.FC<CentralVisualProps> = ({ diffusionStep, imageSrc }) => {
+const CentralVisuals: React.FC<CentralVisualProps> = ({ diffusionStep }) => {
     const NUMBER_OF_IMAGES = 29;
+    const EC2_BASE_URL = "http://34.231.244.123:5000"; // Ensure the protocol is included
+    const IMAGE_URL = `${EC2_BASE_URL}/api/images/image_batch0.png`;
+
     const [isLoading, setIsLoading] = useState(true);
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
     const [hoverTimeout, setHoverTimeout] = useState<NodeJS.Timeout | null>(null);
-    // const [imageSrc, setImageSrc] = useState<string>('elkhound.jpg');
     const containerRef = useRef<HTMLDivElement>(null);
     const canvasesRef = useRef<Array<HTMLCanvasElement>>([]);
+    const [imageSrc, setImageSrc] = useState<string | null>(null);
 
     // Initialize canvases once
     useEffect(() => {
@@ -24,6 +27,7 @@ const CentralVisuals: React.FC<CentralVisualProps> = ({ diffusionStep, imageSrc 
     }, []); // Empty dependency array ensures this runs once on mount
 
     const loadAndProcessImage = useCallback(() => {
+        fetchImg().then();
         const image = new Image();
         if (typeof imageSrc === "string") {
             image.src = imageSrc;
@@ -34,6 +38,15 @@ const CentralVisuals: React.FC<CentralVisualProps> = ({ diffusionStep, imageSrc 
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    const fetchImg = async (): Promise<void> => {
+        const response: Response = await fetch(`${EC2_BASE_URL}/api/images/image_batch0.png`);
+        const imageBlob: Blob = await response.blob();
+        const imageObjectURL: string = URL.createObjectURL(imageBlob);
+        setImageSrc(imageObjectURL);
+    };
+
+
 
     const createDiffusionImages = useCallback((image: HTMLImageElement) => {
         canvasesRef.current.forEach((canvas, index) => {

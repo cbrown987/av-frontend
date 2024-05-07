@@ -1,4 +1,7 @@
 import React from "react";
+import style from './style.module.css'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faGithub, faLinkedin } from '@fortawesome/free-brands-svg-icons';
 
 const TextContent: React.FC = () => {
     return (
@@ -126,6 +129,51 @@ const TextContent: React.FC = () => {
                         </li>
                         <li>
                             DALL-E 2 by OpenAI: [invalid URL removed]
+                        </li>
+                    </ul>
+                </div>
+                <div className="sixth_row">
+                    <h2> Who are we?:
+                    </h2>
+                    <p>
+                        This was a project made as part of the AI major capstone at Drake university.
+                    </p>
+                    <ul className={`${style.aboutUL}`}>
+                        <li>
+                            <div style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
+                                <span style={{fontWeight: 'bold'}}>Jack Welsh</span>
+                                <a href="https://github.com/Jackles1234" target="_blank" rel="noopener noreferrer">
+                                    <FontAwesomeIcon icon={faGithub} size="2x" style={{ color: 'black' }} />
+                                </a>
+                                <a href="https://www.linkedin.com/in/jack-welsh-bb849b250/" target="_blank"
+                                   rel="noopener noreferrer">
+                                    <FontAwesomeIcon icon={faLinkedin} size="2x" style={{ color: 'black' }} />
+                                </a>
+                            </div>
+                        </li>
+                        <li>
+                            <div style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
+                                <span style={{fontWeight: 'bold'}}>Cooper Brown</span>
+                                <a href="https://github.com/cbrown987" target="_blank" rel="noopener noreferrer">
+                                    <FontAwesomeIcon icon={faGithub} size="2x" style={{ color: 'black' }} />
+                                </a>
+                                <a href="https://www.linkedin.com/in/cbrown987/" target="_blank"
+                                   rel="noopener noreferrer">
+                                    <FontAwesomeIcon icon={faLinkedin} size="2x" style={{ color: 'black' }} />
+                                </a>
+                            </div>
+                        </li>
+                        <li>
+                            <div style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
+                                <span style={{fontWeight: 'bold'}}>Conrad Ernst</span>
+                                <a href="https://github.com/ConradErnst" target="_blank" rel="noopener noreferrer">
+                                    <FontAwesomeIcon icon={faGithub} size="2x" style={{ color: 'black' }} />
+                                </a>
+                                <a href="https://www.linkedin.com/in/conradernst/" target="_blank"
+                                   rel="noopener noreferrer">
+                                    <FontAwesomeIcon icon={faLinkedin} size="2x" style={{ color: 'black' }} />
+                                </a>
+                            </div>
                         </li>
                     </ul>
                 </div>

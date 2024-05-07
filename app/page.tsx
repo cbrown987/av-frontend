@@ -4,18 +4,17 @@ import dynamic from 'next/dynamic';
 import axios from 'axios';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faRedo, faPlay, faPause, faForward} from '@fortawesome/free-solid-svg-icons';
+import GithubCorner from "react-github-corner";
 
 import styles from './style.module.css'
 import './globals.css';
-import {FormData, ImageData} from "@/app/Interfaces";
+import {FormData} from "@/app/Interfaces";
 import TextContent from "@/app/components/TextContent/TextContent";
 import FetchedImage from "@/app/components/FetchedImage/FetchedImage";
 
 
 const IndexPage: React.FC = () => {
-  const NUMBER_OF_IMAGES: number = 39
   const EC2_BASE_URL = "http://34.231.244.123:5000"; // Ensure the protocol is included
-
 
     const [formData, setFormData] = useState<FormData>({
         textInput: '',
@@ -24,22 +23,12 @@ const IndexPage: React.FC = () => {
         headChannels: '64',   
         xfHeads: '8'          
     });
-
+    const [isLoading, setIsLoading] = useState(false);
     const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null);
     const [diffusionSteps, setDiffusionSteps] = useState<number>(0)
     const [isDiffusing, setIsDiffusing] = useState<boolean>(false)
-    const [imageSrc, setImageSrc] = useState<string | null>(null);
+    const [APIResponse, setAPIResponse] = useState<boolean>(false);
 
-  // useEffect(() => {
-  //   fetchImages().then();
-  // }, []);
-
-    const displayImage = async (): Promise<void> => {
-        const response = await fetch(`${EC2_BASE_URL}/api/images/image_batch0.png`);
-        const imageBlob = await response.blob();
-        const imageObjectURL = URL.createObjectURL(imageBlob);
-        setImageSrc(imageObjectURL);
-    };
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const {name, value} = e.target;
@@ -51,6 +40,7 @@ const IndexPage: React.FC = () => {
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setIsLoading(true)
         try {
             const dataToSend = {
                 prompt: formData.textInput,
@@ -65,8 +55,9 @@ const IndexPage: React.FC = () => {
                 },
                 timeout: 3600000,
             });
-            alert('Data submitted successfully!');
-            // await displayImage();  // Fetch images again after submitting new data
+            // alert('Data submitted successfully!');
+            setAPIResponse(true)
+            setIsLoading(false)
         } catch (error) {
             console.error('Error submitting data:', error);
             alert(error);
@@ -107,10 +98,6 @@ const IndexPage: React.FC = () => {
       { ssr: false }
   );
 
-    useEffect(() => {
-        displayImage();  // Fetch images again after submitting new data
-
-    }, []);
     return (
         <>
             <nav className="navbar">
@@ -118,8 +105,8 @@ const IndexPage: React.FC = () => {
                     <span className="font-semibold text-xl tracking-tight">Unveiling <span
                         className="bold-word">Text-to-Image</span> AI: A Practical Showcase.</span>
                 </div>
+                <GithubCorner href="https://github.com/Jackles1234/Articulate-Visions" />
             </nav>
-            {/* Second header, contains model parameter dropdowns */}
             <nav className="navbar_sub">
                 <div className="timeline_controls">
                     <div
@@ -140,7 +127,7 @@ const IndexPage: React.FC = () => {
                             onClick={handleFastForwardButtonClick}
                             style={{border: 'none', background: 'none', cursor: 'pointer'}}
                             className={`${styles.controlButton}`}>
-                            <FontAwesomeIcon icon={faForward} size="3x"/>
+                        <FontAwesomeIcon icon={faForward} size="3x"/>
                         </button>
                     </div>
                 </div>
@@ -204,7 +191,7 @@ const IndexPage: React.FC = () => {
                                 value={formData.textInput}
                                 onChange={handleChange}
                                 placeholder="Enter prompt here"
-                                className={styles.inputField}
+                                className={styles.PromptInputField}
                             />
                             <div className={`${styles.inputGroup}`}>
                                 <button type="submit" className={`${styles.sidebarButtonSubmit}`}>Submit</button>
@@ -213,24 +200,14 @@ const IndexPage: React.FC = () => {
                     </form>
                 </div>
             </nav>
-            <div className="columns">
                 <div className="column" id={"imageDisplayContainer"}>
-                    <DynamicCentralVisuals
-                        diffusionStep={diffusionSteps}
-                        imageSrc={imageSrc}
-                    />
+                    {APIResponse ?
+                        <DynamicCentralVisuals diffusionStep={diffusionSteps}/> :
+                        isLoading ? <div className={styles.loading}>Loading...</div> :
+                            <div className={styles.loading}>Please submit some variables</div>
+                    }
                 </div>
-                <div className="column">
-                    <div className="images">
-                        <h2 className="text-lg font-semibold">Images</h2>
-                        <p>Output images</p>
-                        <div className="image-grid">
-                            <FetchedImage/>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <TextContent/>
+            <TextContent />
         </>
     );
 };

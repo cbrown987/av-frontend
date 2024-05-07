@@ -59,17 +59,8 @@
     align-items: center; /* Centers items vertically */
     margin-right: 10px; /* Adds space between input groups */
 }
-
-.sidebarButtonSubmit {
-    padding: 10px 20px; /* Example padding, adjust based on your design */
-    cursor: pointer;
-    background-color: #007bff; /* Example background color */
-    color: white; /* Text color */
-    border: none;
-    border-radius: 5px; /* Optional: rounds the corners of the button */
-}
 .inputField {
-    /*width: 200px; !* Set a specific width for all inputs *!*/
+    width: 60px; /* Set a specific width for all inputs */
     padding: 8px 10px; /* Optional: Add some padding for better text visibility */
     margin: 5px 5px 5px 0; /* Adds margin to the right of each input field */
 }
@@ -81,6 +72,14 @@
     color: white; /* Text color */
     border: none;
     border-radius: 5px; /* Optional: rounds the corners of the button */
-    width: 220px; /* Optional: Adjust width to fit alongside inputs if needed */
+    width: 100px; /* Optional: Adjust width to fit alongside inputs if needed */
     margin-left: 5px; /* Adds margin to the left of the submit button */
+}
+.PromptInputField {
+    width: 200px; /* Set a specific width for all inputs */
+    padding: 8px 10px; /* Optional: Add some padding for better text visibility */
+    margin: 5px 5px 5px 0; /* Adds margin to the right of each input field */
+}
+.aboutUL{
+    list-style-type: none;
 }
