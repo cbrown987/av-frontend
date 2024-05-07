@@ -12,10 +12,9 @@ import TextContent from "@/app/components/TextContent/TextContent";
 import FetchedImage from "@/app/components/FetchedImage/FetchedImage";
 
 
-
 const IndexPage: React.FC = () => {
-    const NUMBER_OF_IMAGES: number = 39
-    const EC2_BASE_URL = "http://3.236.122.207:5000"; // Ensure the protocol is included
+  const NUMBER_OF_IMAGES: number = 39
+  const EC2_BASE_URL = "http://34.231.244.123:5000"; // Ensure the protocol is included
 
 
     const [formData, setFormData] = useState<FormData>({
@@ -30,6 +29,9 @@ const IndexPage: React.FC = () => {
     const [isDiffusing, setIsDiffusing] = useState<boolean>(false)
     const [imageSrc, setImageSrc] = useState<string | null>(null);
 
+  // useEffect(() => {
+  //   fetchImages().then();
+  // }, []);
 
     const displayImage = async (): Promise<void> => {
         const response = await fetch(`${EC2_BASE_URL}/api/images/image_batch0.png`);
