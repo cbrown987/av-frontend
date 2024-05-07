@@ -2,7 +2,10 @@
 import React, {useState, ChangeEvent, FormEvent, useEffect} from 'react';
 import dynamic from 'next/dynamic';
 import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faRedo, faPlay, faPause, faForward } from '@fortawesome/free-solid-svg-icons';
 
+import styles from './style.module.css'
 import './globals.css';
 import {FormData, ImageData} from "@/app/Interfaces";
 import TextContent from "@/app/components/TextContent/TextContent";
@@ -26,7 +29,7 @@ const IndexPage: React.FC = () => {
   const [image, setImage] = useState(null);
   const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null);
   const [diffusionSteps, setDiffusionSteps] = useState<number>(0)
-
+  const [isDiffusing, setIsDiffusing] = useState<boolean>(false)
 
   // useEffect(() => {
   //   fetchImages().then();
@@ -74,6 +77,7 @@ const IndexPage: React.FC = () => {
   };
 
   const handlePlayButtonClick = () => {
+    setIsDiffusing(!isDiffusing)
     if (intervalId === null) {
       const id = setInterval(() => {
         setDiffusionSteps((diffusionSteps) => diffusionSteps +1);
@@ -106,41 +110,37 @@ const IndexPage: React.FC = () => {
       { ssr: false }
   );
 
-
   return (
       <>
-        {/* First header, 2xheight of second heder, contains text */}
         <nav className="navbar">
           <div>
-            <span className="font-semibold text-xl tracking-tight">Unveiling <span className="bold-word">Text-to-Image</span> AI: A Playground for Creativity!</span>
+            <span className="font-semibold text-xl tracking-tight">Unveiling <span className="bold-word">Text-to-Image</span> AI: A Practical Showcase.</span>
           </div>
         </nav>
-
-
         {/* Second header, contains model parameter dropdowns */}
         <nav className="navbar_sub">
           <div className="timeline_controls">
-            <button
-                className="control-button rewind"
-                  title="rewind"
-                onClick={handleResetButtonClick}
-            >
-              <i className="material-icons"></i>
-            </button>
-            <button
-                className="control-button play-pause"
-                id="play-pause-button"
-                title="Run/Pause training"
-                onClick={handlePlayButtonClick}>
-              <i id="play-pause-icon" className="material-icons"></i>
-            </button>
-            <button
-                className="control-button fastforward"
-                title="fastforward"
-                onClick={handleFastForwardButtonClick}
-            >
-              <i className="material-icons"></i>
-            </button>
+            <div
+                style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+              <button
+                  onClick={handleResetButtonClick}
+                  style={{border: 'none', background: 'none', cursor: 'pointer'}}
+                  className={`${styles.controlButton}`}>
+                <FontAwesomeIcon icon={faRedo} size="3x"/>
+              </button>
+              <button
+                  onClick={handlePlayButtonClick}
+                  style={{border: 'none', background: 'none', cursor: 'pointer'}}
+                  className={`${styles.controlButton}`}>
+                <FontAwesomeIcon icon={isDiffusing ? faPause : faPlay} size="3x"/>
+              </button>
+              <button
+                  onClick={handleFastForwardButtonClick}
+                  style={{border: 'none', background: 'none', cursor: 'pointer'}}
+                  className={`${styles.controlButton}`}>
+                <FontAwesomeIcon icon={faForward} size="3x"/>
+              </button>
+            </div>
           </div>
           <div>
             <div>
@@ -150,55 +150,50 @@ const IndexPage: React.FC = () => {
               <span className="diffusion-step">{diffusionSteps.toFixed()}</span>
             </div>
           </div>
-          <div>
-            <span className="header_sub_column">Batch Size</span>
-            <input
-                type="text"
-                value={formData.batchSize}
-                name={"batchSize"}
-                onChange={handleChange}
-                placeholder="Enter whole numbers only"
-            />
-          </div>
-          <div>
-            <span className="header_sub_column">Guidance Scale</span>
-            <input
-                type="text"
-                value={formData.guidanceScale}
-                name={"guidanceScale"}
-                onChange={handleChange}
-            />
-          </div>
-
-
-        </nav>
-
-        <div className="columns">
-          <div className="column">
-              <div>
-                <h2 className="text-lg font-semibold">Sidebar</h2>
-                <form onSubmit={handleSubmit} className="sidebar-form">
-                  <input
-                      type="text"
-                      name="textInput"
-                      value={formData.textInput}
-                      onChange={handleChange}
-                      placeholder="Enter prompt here"
-                      className="sidebar-input"
-                  />
-                  <button type="submit" className="sidebar-button-submit">Submit</button>
-                </form>
-              </div>
+          <div className={`${styles.formContainer}`}>
+          <form onSubmit={handleSubmit} className={`${styles.formContainer}`}>
+            <div className={`${styles.inputGroup}`}>
+              <span className="header_sub_column">Batch Size:</span>
+              <input
+                  type="text"
+                  value={formData.batchSize}
+                  name={"batchSize"}
+                  onChange={handleChange}
+                  placeholder="Enter whole numbers only"
+                  className={styles.inputField}
+              />
             </div>
-
-
+            <div className={`${styles.inputGroup}`}>
+              <span className="header_sub_column">Guidance Scale:</span>
+              <input
+                  type="text"
+                  value={formData.guidanceScale}
+                  name={"guidanceScale"}
+                  onChange={handleChange}
+                  className={styles.inputField}
+              />
+            </div>
+              <div className={`${styles.inputGroup}`}>
+                <input
+                    type="text"
+                    name="textInput"
+                    value={formData.textInput}
+                    onChange={handleChange}
+                    placeholder="Enter prompt here"
+                    className={styles.inputField}
+                />
+              <div className={`${styles.inputGroup}`}>
+                <button type="submit" className={`${styles.sidebarButtonSubmit}`}>Submit</button>
+              </div>
+              </div>
+          </form>
+          </div>
+        </nav>
+        <div className="columns">
           <div className="column" id={"imageDisplayContainer"}>
-
-            <h2>ML Model</h2>
             <DynamicCentralVisuals
               diffusionStep={diffusionSteps}
             />
-
           </div>
           <div className="column">
             <div className="images">
