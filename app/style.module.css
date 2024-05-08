@@ -83,3 +83,33 @@
 .aboutUL{
     list-style-type: none;
 }
+
+.inputFieldSelect {
+    width: 60px;  /* Ensures consistency in width */
+    padding: 8px 10px;
+    margin: 5px 5px 5px 0;
+    border: 1px solid #ccc; /* Example to ensure borders are consistent */
+    border-radius: 4px; /* Rounds the corners */
+    appearance: none; /* Removes default system appearance */
+    background-color: white; /* Ensures the background color matches */
+    cursor: pointer; /* Changes cursor to pointer on hover */
+}
+
+.inputFieldSelect::-ms-expand {
+    display: none; /* Hide the default arrow in IE and Edge */
+}
+
+.inputField-select::after {
+    content: '▼';  /* Adds a custom dropdown arrow */
+    position: absolute;
+    right: 10px;
+    top: calc(50% - 0.5em);  /* Centers the arrow vertically */
+    pointer-events: none;  /* Ensures arrow does not block the dropdown */
+    color: #aaa;  /* Sets the arrow color */
+}
+.error {
+    color: white;
+    background: red;
+    font-size: 0.8em;
+    margin-top: 4px;
+}

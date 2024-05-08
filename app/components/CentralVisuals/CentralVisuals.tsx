@@ -105,7 +105,7 @@ const CentralVisuals: React.FC<CentralVisualProps> = ({ diffusionStep }) => {
             <img key={index} src={canvas.toDataURL()} alt={`Noise frame ${index}`}
                  className={styles.canvasImage}
                  style={{
-                     left: `${index * 20}px`,
+                     left: `${index * 50}px`,
                      display: index <= diffusionStep ? 'block' : 'none',
                      zIndex: activeIndex === index ? 10 : 1,
                      transform: activeIndex === index ? 'scale(1.1)' : 'scale(1)'

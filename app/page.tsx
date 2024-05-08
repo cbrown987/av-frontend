@@ -22,20 +22,49 @@ const IndexPage: React.FC = () => {
         headChannels: '64',   
         xfHeads: '8'          
     });
+    const [errors, setErrors] = useState<{
+        batchSize?: string,
+        guidanceScale?: string,
+        textInput?: string
+    }>({});
     const [isLoading, setIsLoading] = useState(false);
     const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null);
     const [diffusionSteps, setDiffusionSteps] = useState<number>(0)
     const [isDiffusing, setIsDiffusing] = useState<boolean>(false)
     const [APIResponse, setAPIResponse] = useState<boolean>(false);
 
+    // RegEx for ints
+    const integerRegEx = /^[0-9]*$/;
+    // RegEx for floats
+    const floatRegEx = /^-?\d*(\.\d*)?$/;
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const {name, value} = e.target;
+        let error = '';
+        if (name === 'batchSize') {
+            if (!integerRegEx.test(value)) {
+                error = 'Batch size must be an integer.';
+            }
+        } else if (name === 'guidanceScale') {
+            if (!floatRegEx.test(value)) {
+                error = 'Guidance scale must be a float.';
+            }
+        }
+        if (error) {
+            setErrors(prevErrors => ({ ...prevErrors, [name]: error }));
+        } else {
+            setErrors(prevErrors => ({ ...prevErrors, [name]: '' }));
+            setFormData(prevState => ({ ...prevState, [name]: value }));
+        }
+    };
+
+    const handleSelectChange = (e: ChangeEvent<HTMLSelectElement>) => {
         const {name, value} = e.target;
         setFormData(prevState => ({
             ...prevState,
             [name]: value,
         }));
-    };
+    }
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -145,11 +174,12 @@ const IndexPage: React.FC = () => {
                             <input
                                 type="text"
                                 value={formData.batchSize}
-                                name={""}
-                                onChange={handleChange}
+                                name={"batchSize"}
+                                onChange={handleInputChange}
                                 placeholder="Enter whole numbers only"
                                 className={styles.inputField}
                             />
+                            {errors.batchSize && <div className={styles.error}>{errors.batchSize}</div>}
                         </div>
                         <div className={`${styles.inputGroup}`}>
                             <span className="header_sub_column">Guidance Scale:</span>
@@ -157,20 +187,24 @@ const IndexPage: React.FC = () => {
                                 type="text"
                                 value={formData.guidanceScale}
                                 name={"guidanceScale"}
-                                onChange={handleChange}
+                                onChange={handleInputChange}
                                 className={styles.inputField}
                             />
+                            {errors.guidanceScale && <div className={styles.error}>{errors.guidanceScale}</div>}
+
                         </div>
                         <div className={`${styles.inputGroup}`}>
                             <span className="header_sub_column">Head Channels:</span>
-                            <input
-                                type="text"
+                            <select
                                 name="headChannels"
                                 value={formData.headChannels}
-                                onChange={handleChange}
-                                placeholder="Enter whole numbers only"
-                                className={styles.inputField}
-                            />
+                                onChange={handleSelectChange}
+                                className={styles.inputFieldSelect}>
+
+                                <option value={8}>8</option>
+                                <option value={16}>16</option>
+                                <option value={32}>32</option>
+                            </select>
                         </div>
                         {/*<div className={`${styles.inputGroup}`}>*/}
                         {/*    <span className="header_sub_column">XF Heads:</span>*/}
@@ -178,7 +212,7 @@ const IndexPage: React.FC = () => {
                         {/*        type="text"*/}
                         {/*        name="xfHeads"*/}
                         {/*        value={formData.xfHeads}*/}
-                        {/*        onChange={handleChange}*/}
+                        {/*        onChange={handleInputChange}*/}
                         {/*        placeholder="Enter whole numbers only"*/}
                         {/*        className={styles.inputField}*/}
                         {/*    />*/}
@@ -188,7 +222,7 @@ const IndexPage: React.FC = () => {
                                 type="text"
                                 name="textInput"
                                 value={formData.textInput}
-                                onChange={handleChange}
+                                onChange={handleInputChange}
                                 placeholder="Enter prompt here"
                                 className={styles.PromptInputField}
                             />
@@ -205,6 +239,8 @@ const IndexPage: React.FC = () => {
                         isLoading ? <div className={styles.loading}>Loading...</div> :
                             <div className={styles.loading}>Please submit some variables</div>
                     }
+                    {/*For testing the central visuals without submitting to API*/}
+                    {/*<DynamicCentralVisuals diffusionStep={diffusionSteps}/>*/}
                 </div>
             <TextContent />
         </>
