@@ -4,7 +4,7 @@ import styles from './style.module.css';
 
 const CentralVisuals: React.FC<CentralVisualProps> = ({ diffusionStep }) => {
     const NUMBER_OF_IMAGES = 29;
-    const EC2_BASE_URL = "http://34.231.244.123:5000"; // Ensure the protocol is included
+    const EC2_BASE_URL = "http://34.239.152.110:5000"; // Ensure the protocol is included
     const IMAGE_URL = `${EC2_BASE_URL}/api/images/image_batch0.png`;
 
     const [isLoading, setIsLoading] = useState(true);
@@ -39,13 +39,28 @@ const CentralVisuals: React.FC<CentralVisualProps> = ({ diffusionStep }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const fetchImg = async (): Promise<void> => {
-        const response: Response = await fetch(`${EC2_BASE_URL}/api/images/image_batch0.png`);
-        const imageBlob: Blob = await response.blob();
-        const imageObjectURL: string = URL.createObjectURL(imageBlob);
-        setImageSrc(imageObjectURL);
+    const fetchImg = async () => {
+        try {
+            const response = await fetch(IMAGE_URL);
+            const imageBlob = await response.blob();
+            const imageObjectURL = URL.createObjectURL(imageBlob);
+            setImageSrc(imageObjectURL);
+        } catch (error) {
+            console.error('Failed to fetch image:', error);
+            setIsLoading(false);
+        }
     };
 
+    useEffect(() => {
+        if (imageSrc) {
+            const image = new Image();
+            image.src = imageSrc;
+            image.onload = () => {
+                createDiffusionImages(image);
+                setIsLoading(false);
+            };
+        }
+    }, [imageSrc]);
 
 
     const createDiffusionImages = useCallback((image: HTMLImageElement) => {

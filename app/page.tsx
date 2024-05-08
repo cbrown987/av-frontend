@@ -10,11 +10,10 @@ import styles from './style.module.css'
 import './globals.css';
 import {FormData} from "@/app/Interfaces";
 import TextContent from "@/app/components/TextContent/TextContent";
-import FetchedImage from "@/app/components/FetchedImage/FetchedImage";
 
 
 const IndexPage: React.FC = () => {
-  const EC2_BASE_URL = "http://34.231.244.123:5000"; // Ensure the protocol is included
+  const EC2_BASE_URL = "http://34.239.152.110:5000"; // Ensure the protocol is included
 
     const [formData, setFormData] = useState<FormData>({
         textInput: '',
@@ -47,7 +46,7 @@ const IndexPage: React.FC = () => {
                 batch_size: parseInt(formData.batchSize),
                 guidance_scale: parseFloat(formData.guidanceScale),
                 head_channels: parseInt(formData.headChannels),
-                xf_heads: parseInt(formData.xfHeads)            
+                xf_heads: parseInt(formData.xfHeads)
             };
             await axios.post(`${EC2_BASE_URL}/api/submit`, dataToSend, {
                 headers: {
@@ -173,17 +172,17 @@ const IndexPage: React.FC = () => {
                                 className={styles.inputField}
                             />
                         </div>
-                        <div className={`${styles.inputGroup}`}>
-                            <span className="header_sub_column">XF Heads:</span>
-                            <input
-                                type="text"
-                                name="xfHeads"
-                                value={formData.xfHeads}
-                                onChange={handleChange}
-                                placeholder="Enter whole numbers only"
-                                className={styles.inputField}
-                            />
-                        </div>
+                        {/*<div className={`${styles.inputGroup}`}>*/}
+                        {/*    <span className="header_sub_column">XF Heads:</span>*/}
+                        {/*    <input*/}
+                        {/*        type="text"*/}
+                        {/*        name="xfHeads"*/}
+                        {/*        value={formData.xfHeads}*/}
+                        {/*        onChange={handleChange}*/}
+                        {/*        placeholder="Enter whole numbers only"*/}
+                        {/*        className={styles.inputField}*/}
+                        {/*    />*/}
+                        {/*</div>*/}
                         <div className={`${styles.inputGroup}`}>
                             <input
                                 type="text"

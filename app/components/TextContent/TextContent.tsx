@@ -133,7 +133,7 @@ const TextContent: React.FC = () => {
                     </ul>
                 </div>
                 <div className="sixth_row">
-                    <h2> Who are we?:
+                    <h2> Who are we?
                     </h2>
                     <p>
                         This was a project made as part of the AI major capstone at Drake university.
