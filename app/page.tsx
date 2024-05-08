@@ -18,8 +18,8 @@ const IndexPage: React.FC = () => {
     const [formData, setFormData] = useState<FormData>({
         textInput: '',
         batchSize: '1',
-        guidanceScale: '3.0',
-        headChannels: '64',   
+        guidanceScale: '1.0',
+        headChannels: '8',
         xfHeads: '8'          
     });
     const [errors, setErrors] = useState<{
