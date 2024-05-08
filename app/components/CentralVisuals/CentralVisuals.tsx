@@ -4,7 +4,7 @@ import styles from './style.module.css';
 
 const CentralVisuals: React.FC<CentralVisualProps> = ({ diffusionStep }) => {
     const NUMBER_OF_IMAGES = 29;
-    const EC2_BASE_URL = "http://34.239.152.110:5000"; // Ensure the protocol is included
+    const EC2_BASE_URL = "http://44.222.116.200:5000"; // Ensure the protocol is included
     const IMAGE_URL = `${EC2_BASE_URL}/api/images/image_batch0.png`;
 
     const [isLoading, setIsLoading] = useState(true);
