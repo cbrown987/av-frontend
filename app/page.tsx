@@ -13,7 +13,7 @@ import TextContent from "@/app/components/TextContent/TextContent";
 
 
 const IndexPage: React.FC = () => {
-  const EC2_BASE_URL = "http://34.239.152.110:5000"; // Ensure the protocol is included
+  const EC2_BASE_URL = "http://44.222.116.200:5000"; // Ensure the protocol is included
 
     const [formData, setFormData] = useState<FormData>({
         textInput: '',
