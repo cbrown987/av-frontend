@@ -200,10 +200,11 @@ const IndexPage: React.FC = () => {
                                 value={formData.headChannels}
                                 onChange={handleSelectChange}
                                 className={styles.inputFieldSelect}>
-
                                 <option value={8}>8</option>
                                 <option value={16}>16</option>
                                 <option value={32}>32</option>
+                                <option value={64}>64</option>
+                                <option value={128}>128</option>
                             </select>
                         </div>
                         {/*<div className={`${styles.inputGroup}`}>*/}

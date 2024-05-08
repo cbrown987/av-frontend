@@ -7,6 +7,35 @@ const TextContent: React.FC = () => {
     return (
         <>
             <div id="main-part">
+                <div>
+                    <h2>What do these variables mean?</h2>
+                    <p>
+                        The variables above are all inputs that effect how the images are created.
+                    </p>
+                    <ul>
+                        <li>
+                            <b>Diffusion Steps</b>: Diffusion steps is the number of times the model has moved away from
+                            random noise.
+                            at step 0 the image is purely random noise however as the steps increase the image begins to
+                            take its final shape.
+                        </li>
+                        <li>
+                            <b>Batch Size</b>: refers to the number of training samples that a machine learning model
+                            processes before it updates its parameters.
+                        </li>
+                        <li>
+                            <b>Guidance Scale</b>: determines how strongly a model adheres to specific instructions or
+                            conditions when generating content. Think of it as the level of strictness a director
+                            applies when guiding an actor’s performance in a play.
+                        </li>
+                        <li>
+                            <b>Head Channels</b>: determines how strongly a model adheres to specific instructions or conditions when generating
+                            content. Think of it as the level of strictness a director applies when guiding an actor’s
+                            performance in a play.
+                        </li>
+                    </ul>
+
+                </div>
                 <div className="first_row">
                     <h2> A Technical Deep Dive into Text-to-Image AI
                     </h2>
