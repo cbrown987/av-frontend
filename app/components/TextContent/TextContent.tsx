@@ -7,144 +7,65 @@ const TextContent: React.FC = () => {
     return (
         <>
             <div id="main-part">
-                <div>
-                    <h2>What do these variables mean?</h2>
-                    <p>
-                        The variables above are all inputs that effect how the images are created.
-                    </p>
-                    <ul>
-                        <li>
-                            <b>Diffusion Steps</b>: Diffusion steps is the number of times the model has moved away from
-                            random noise.
-                            at step 0 the image is purely random noise however as the steps increase the image begins to
-                            take its final shape.
-                        </li>
-                        <li>
-                            <b>Batch Size</b>: refers to the number of training samples that a machine learning model
-                            processes before it updates its parameters.
-                        </li>
-                        <li>
-                            <b>Guidance Scale</b>: determines how strongly a model adheres to specific instructions or
-                            conditions when generating content. Think of it as the level of strictness a director
-                            applies when guiding an actor’s performance in a play.
-                        </li>
-                        <li>
-                            <b>Head Channels</b>: determines how strongly a model adheres to specific instructions or conditions when generating
-                            content. Think of it as the level of strictness a director applies when guiding an actor’s
-                            performance in a play.
-                        </li>
-                    </ul>
+            <div className="first_row">
+                <h2> Exploring the Mechanics of Text-to-Image AI
+                </h2>
+                <p>
+                    Text-to-image AI is a remarkable technology that transforms textual descriptions into vivid visual representations. It employs sophisticated deep learning models, which are neural networks trained on vast datasets of text-image pairs. These models serve as the backbone of the AI, enabling it to understand the complex relationships between language and visual content.
+                </p>
+            </div>
 
-                </div>
-                <div className="first_row">
-                    <h2> A Technical Deep Dive into Text-to-Image AI
-                    </h2>
-                    <p>
-                        The ability to weave captivating visuals from the tapestry of language
-                        is no longer science fiction. Text-to-image AI is revolutionizing creative
-                        expression, empowering users to bridge the gap between imagination and
-                        digital canvas. But what lies beneath the hood of this transformative
-                        technology? Let&apos;s embark on a technical exploration, dissecting the core
-                        functionalities and the fascinating processes that bring your words to life
-                        as visuals.
-                    </p>
-                </div>
+            <div className="second_row">
+                <h2> Unveiling the Role of Deep Learning Models
+                </h2>
+                <p>
+                    At the heart of text-to-image AI lie deep learning models, particularly convolutional neural networks (CNNs). Trained on extensive datasets, these models learn to extract meaningful features from textual descriptions and generate corresponding images. The process involves encoding textual inputs into high-dimensional vector representations, which capture semantic meanings and relationships.
+                </p>
+                <ul>
+                    <li>
+                        Encoder Networks: These CNNs process textual descriptions, extracting latent representations that encapsulate semantic information, serving as input for image generation.
+                    </li>
+                </ul>
+            </div>
 
-                <div className="second_row">
-                    <h2> Deep Learning Models
-                    </h2>
-                    <p>
-                        At the heart of text-to-image AI lie deep learning models, specifically
-                        convolutional neural networks (CNNs) trained on massive datasets of text-image
-                        pairs. These datasets act as the Rosetta Stone for the AI, enabling it to
-                        decipher the complex relationships between textual descriptions and their
-                        corresponding visual representations. When you provide a text prompt, the
-                        model dissects your words, identifying key elements, objects, and their spatial
-                        relationships. This extracted information serves as the foundation for the
-                        image generation process.
-                    </p>
-                    <ul>
-                        <li>
-                            Encoder Networks: These CNNs process your text description, extracting a
-                            high-dimensional vector representation that captures the semantic meaning
-                            and relationships within your words.
-                        </li>
-                    </ul>
-                </div>
+            <div className="third_row">
+                <h2> Deciphering the Intricacies of Diffusion Models
+                </h2>
+                <p>
+                    Diffusion models represent a prominent approach in text-to-image AI, wherein noisy initial states evolve into coherent images guided by textual descriptions. This iterative process involves embedding textual inputs into latent spaces, iteratively refining noisy images, and predicting denoised versions aligned with textual semantics.
+                </p>
+                <ul>
+                    <li>
+                        Guiding with Text: Text embeddings guide the diffusion process, ensuring that the generated images faithfully represent the semantic content of the input descriptions.
+                    </li>
+                    <li>
+                        Iterative Refinement: The model iteratively refines noisy images, progressively enhancing details based on embedded text information.
+                    </li>
+                    <li>
+                        Predicting the Next Step: Employing U-Net architectures, the model predicts denoised images aligned with textual descriptions, culminating in the generation of visually compelling outputs.
+                    </li>
+                </ul>
+            </div>
 
-                <div className="third_row">
-                    <h2> From Noise to Form: Demystifying Diffusion Models
-                    </h2>
-                    <p>
-                        One of the most prominent approaches in text-to-image AI is diffusion.
-                        Diffusion models operate by gradually refining an initial state of noise
-                        into a coherent image that aligns with your text description. Here&apos;s a
-                        breakdown of the diffusion process:
-                    </p>
-                    <ul>
-                        <li>
-                            Guiding with Text: Your text description is embedded into a latent space
-                            using another CNN (text encoder). This embedding is then incorporated into
-                            the diffusion process, guiding the model towards generating an image that
-                            reflects the semantic content of your words.
-                        </li>
-                        <li>
-                            Iterative Refinement: The core of the diffusion process lies in a series of
-                            denoising steps. At each step, the model predicts the &quot;cleaner&quot; version of
-                            the current noisy image, effectively removing noise and introducing image
-                            details based on the embedded text information.
-                        </li>
-                        <li>
-                            Predicting the Next Step: The model utilizes a U-Net like architecture to
-                            predict the &quot;denoised&quot; version of the current image. This prediction step
-                            leverages the embedded text information to ensure the denoised image aligns
-                            with your description.
-                        </li>
-                        <li>
-                            The Unveiling: After a predetermined number of denoising steps, the model
-                            outputs the final image - a visual representation meticulously crafted from
-                            your text prompt and guided by the iterative diffusion process.
-                        </li>
-                    </ul>
-                </div>
+            <div className="fourth_row">
+                <h2> Exploring Alternative Text-to-Image Approaches
+                </h2>
+                <p>
+                    While diffusion models dominate the landscape of text-to-image AI, alternative approaches offer unique functionalities, each with its own set of advantages:
+                </p>
+                <ul>
+                    <li>
+                        Autoencoders: These models leverage encoder-decoder architectures to generate images from textual descriptions, emphasizing semantic fidelity.
+                    </li>
+                    <li>
+                        Attention-Based Models: Incorporating attention mechanisms, these models focus on salient regions of images based on textual emphasis, facilitating high-fidelity visual generation.
+                    </li>
+                    <li>
+                        Generative Adversarial Networks (GANs): GANs employ adversarial training to iteratively refine images, balancing visual fidelity and semantic coherence in response to textual inputs.
+                    </li>
+                </ul>
+            </div>
 
-                <div className="fourth_row">
-                    <h2> Exploring Alternative Text-to-Image Approaches
-                    </h2>
-                    <p>
-                        While diffusion models are currently at the forefront,
-                        other text-to-image approaches offer unique functionalities:
-                    </p>
-                    <ul>
-                        <li>
-                            Autoencoders: These models employ a two-part architecture: an encoder and
-                            a decoder. The encoder compresses your text description into a latent space
-                            representation, capturing its essence. The decoder then utilizes this latent
-                            representation to generate an image reflecting the encoded information. This
-                            approach excels at capturing the core semantic meaning of your text prompt and
-                            translating it into a visually coherent image.
-                        </li>
-                        <li>
-                            Attention-Based Models: These models incorporate attention mechanisms
-                            that focus on specific parts of the generated image based on the relative
-                            importance of different elements in your text prompt. Imagine the model
-                            strategically allocating its resources to render crucial details you mentioned
-                            in your description, like a flowing mane on a lion or the intricate scales of
-                            a dragon. Attention-based models are particularly adept at generating images
-                            with a high degree of fidelity to the specific details mentioned in the text prompt.
-                        </li>
-                        <li>
-                            Generative Adversarial Networks (GANs): These models involve two competing
-                            neural networks: a generator and a discriminator. The generator strives
-                            to produce an image that aligns with your text description and artistic
-                            style preferences. The discriminator, acting as a discerning critic,
-                            meticulously evaluates the generated image, providing feedback to the
-                            generator. Through this adversarial training process, the GANs refine the
-                            image iteratively, pushing it closer to a visually compelling and semantically
-                            accurate representation of your text prompt.
-                        </li>
-                    </ul>
-                </div>
                 <div className="fifth_row">
                     <h2> Explore the Cutting Edge:
                     </h2>
@@ -154,10 +75,13 @@ const TextContent: React.FC = () => {
                     </p>
                     <ul>
                         <li>
-                            Imagen by Google AI: [invalid URL removed]
+                            Imagen by Google AI: <a href="https://imagen.research.google/" target="_blank" rel="noopener noreferrer">https://imagen.research.google/</a>
                         </li>
                         <li>
-                            DALL-E 2 by OpenAI: [invalid URL removed]
+                            Parti by Google AI: <a href="https://sites.research.google/parti/" target="_blank" rel="noopener noreferrer">https://sites.research.google/parti/</a>
+                        </li>
+                        <li>
+                            DALL-E 3 by OpenAI: <a href="[https://openai.com/index/dall-e-3]" target="_blank" rel="noopener noreferrer">https://openai.com/index/dall-e-3</a>
                         </li>
                     </ul>
                 </div>
