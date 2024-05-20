@@ -1,3 +1,5 @@
+import React from "react";
+
 export interface FormData {
     textInput: string;
     batchSize: string
@@ -13,4 +15,10 @@ export interface ImageData {
 
 export interface CentralVisualProps{
     diffusionStep: number;
+}
+
+
+export interface ModalProps {
+    isOpen: boolean;
+    onClose: () => void;
 }

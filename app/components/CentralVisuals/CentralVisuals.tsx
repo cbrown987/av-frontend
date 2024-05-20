@@ -4,15 +4,13 @@ import styles from './style.module.css';
 
 const CentralVisuals: React.FC<CentralVisualProps> = ({ diffusionStep }) => {
     const NUMBER_OF_IMAGES = 29;
-    const EC2_BASE_URL = "http://44.222.116.200:5000"; // Ensure the protocol is included
-    const IMAGE_URL = `${EC2_BASE_URL}/api/images/image_batch0.png`;
+    const IMAGE_PATH = '/dog_sample.png'; // Local path to the image in the public directory
 
     const [isLoading, setIsLoading] = useState(true);
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
     const [hoverTimeout, setHoverTimeout] = useState<NodeJS.Timeout | null>(null);
     const containerRef = useRef<HTMLDivElement>(null);
     const canvasesRef = useRef<Array<HTMLCanvasElement>>([]);
-    const [imageSrc, setImageSrc] = useState<string | null>(null);
 
     // Initialize canvases once
     useEffect(() => {
@@ -21,47 +19,14 @@ const CentralVisuals: React.FC<CentralVisualProps> = ({ diffusionStep }) => {
             canvas.width = 300;
             canvas.height = 300;
         });
-        // Load and process initial image
-        loadAndProcessImage();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []); // Empty dependency array ensures this runs once on mount
 
-    const loadAndProcessImage = useCallback(() => {
-        fetchImg().then();
         const image = new Image();
-        if (typeof imageSrc === "string") {
-            image.src = imageSrc;
-        }
+        image.src = IMAGE_PATH;
         image.onload = () => {
             createDiffusionImages(image);
             setIsLoading(false);
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    const fetchImg = async () => {
-        try {
-            const response = await fetch(IMAGE_URL);
-            const imageBlob = await response.blob();
-            const imageObjectURL = URL.createObjectURL(imageBlob);
-            setImageSrc(imageObjectURL);
-        } catch (error) {
-            console.error('Failed to fetch image:', error);
-            setIsLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        if (imageSrc) {
-            const image = new Image();
-            image.src = imageSrc;
-            image.onload = () => {
-                createDiffusionImages(image);
-                setIsLoading(false);
-            };
-        }
-    }, [imageSrc]);
-
+    }, []); // Empty dependency array ensures this runs once on mount
 
     const createDiffusionImages = useCallback((image: HTMLImageElement) => {
         canvasesRef.current.forEach((canvas, index) => {
@@ -78,7 +43,6 @@ const CentralVisuals: React.FC<CentralVisualProps> = ({ diffusionStep }) => {
             }
             ctx.putImageData(imageData, 0, 0);
         });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [NUMBER_OF_IMAGES]);
 
     const interpolate = useCallback((startValue: number, endValue: number, factor: number) => {
@@ -99,7 +63,6 @@ const CentralVisuals: React.FC<CentralVisualProps> = ({ diffusionStep }) => {
         setActiveIndex(null);
     }, [hoverTimeout]);
 
-
     const renderCanvases = () => {
         return [...canvasesRef.current].reverse().map((canvas, index) => (
             <img key={index} src={canvas.toDataURL()} alt={`Noise frame ${index}`}
@@ -118,7 +81,6 @@ const CentralVisuals: React.FC<CentralVisualProps> = ({ diffusionStep }) => {
 
     return (
         <div ref={containerRef} className={styles.canvasContainer}>
-            {imageSrc == null && <div className={styles.loading}>Please submit some variables</div>}
             {isLoading && <div className={styles.loading}>Loading...</div>}
             {renderCanvases()}
         </div>

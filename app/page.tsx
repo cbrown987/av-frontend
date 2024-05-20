@@ -10,11 +10,10 @@ import styles from './style.module.css'
 import './globals.css';
 import {FormData} from "@/app/Interfaces";
 import TextContent from "@/app/components/TextContent/TextContent";
+import AlertPopup from "@/app/components/AlertPopup/AlertPopup";
 
 
 const IndexPage: React.FC = () => {
-  const EC2_BASE_URL = "http://44.222.116.200:5000"; // Ensure the protocol is included
-
     const [formData, setFormData] = useState<FormData>({
         textInput: '',
         batchSize: '1',
@@ -32,6 +31,10 @@ const IndexPage: React.FC = () => {
     const [diffusionSteps, setDiffusionSteps] = useState<number>(0)
     const [isDiffusing, setIsDiffusing] = useState<boolean>(false)
     const [APIResponse, setAPIResponse] = useState<boolean>(false);
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(true);
+
+
+    const handleCloseModal = (): void => setIsModalOpen(false);
 
     // RegEx for ints
     const integerRegEx = /^[0-9]*$/;
@@ -68,28 +71,7 @@ const IndexPage: React.FC = () => {
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setIsLoading(true)
-        try {
-            const dataToSend = {
-                prompt: formData.textInput,
-                batch_size: parseInt(formData.batchSize),
-                guidance_scale: parseFloat(formData.guidanceScale),
-                head_channels: parseInt(formData.headChannels),
-                xf_heads: parseInt(formData.xfHeads)
-            };
-            await axios.post(`${EC2_BASE_URL}/api/submit`, dataToSend, {
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                timeout: 3600000,
-            });
-            // alert('Data submitted successfully!');
-            setAPIResponse(true)
-            setIsLoading(false)
-        } catch (error) {
-            console.error('Error submitting data:', error);
-            alert(error);
-        }
+        setIsModalOpen(true);
     };
 
     const handlePlayButtonClick = () => {
@@ -207,17 +189,6 @@ const IndexPage: React.FC = () => {
                                 <option value={128}>128</option>
                             </select>
                         </div>
-                        {/*<div className={`${styles.inputGroup}`}>*/}
-                        {/*    <span className="header_sub_column">XF Heads:</span>*/}
-                        {/*    <input*/}
-                        {/*        type="text"*/}
-                        {/*        name="xfHeads"*/}
-                        {/*        value={formData.xfHeads}*/}
-                        {/*        onChange={handleInputChange}*/}
-                        {/*        placeholder="Enter whole numbers only"*/}
-                        {/*        className={styles.inputField}*/}
-                        {/*    />*/}
-                        {/*</div>*/}
                         <div className={`${styles.inputGroup}`}>
                             <input
                                 type="text"
@@ -232,16 +203,13 @@ const IndexPage: React.FC = () => {
                             </div>
                         </div>
                     </form>
+                    <AlertPopup isOpen={isModalOpen} onClose={handleCloseModal} />
                 </div>
             </nav>
                 <div className="column" id={"imageDisplayContainer"}>
-                    {APIResponse ?
-                        <DynamicCentralVisuals diffusionStep={diffusionSteps}/> :
-                        isLoading ? <div className={styles.loading}>Loading...</div> :
-                            <div className={styles.loading}>Please submit some variables</div>
+                    { !isModalOpen &&
+                        <DynamicCentralVisuals diffusionStep={diffusionSteps}/>
                     }
-                    {/*For testing the central visuals without submitting to API*/}
-                    {/*<DynamicCentralVisuals diffusionStep={diffusionSteps}/>*/}
                 </div>
             <TextContent />
         </>
